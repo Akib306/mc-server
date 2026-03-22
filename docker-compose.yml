@@ -6,13 +6,18 @@ services:
     container_name: mc-server
     environment:
       EULA: "TRUE"
-      TYPE: "PAPER" # PaperMC is highly recommended over Vanilla for better performance
+      # TYPE: "PAPER" # PaperMC is highly recommended over Vanilla for better performance
+      TYPE: "FORGE"
       VERSION: "LATEST"
     volumes:
-      - ./data:/data
+      - mc_data:/data
+      - ./mods:/mods:ro
     ports:
       - "25565:25565" # Optional: Only needed if want to connect locally via localhost
     restart: unless-stopped
+
+  volumes:
+    mc_data: {}
 
   ngrok:
     image: ngrok/ngrok:latest
