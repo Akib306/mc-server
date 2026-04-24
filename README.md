@@ -24,17 +24,17 @@ Simple Docker setup for a Minecraft Paper server, exposed to friends over ngrok 
 ## Start the server
 
 ```bash
-docker compose up -d
+./start-server.sh
 ```
 
 This starts:
 
-- `mc-server` (Paper Minecraft server)
+- `minecraft-forge` (Forge Minecraft server)
 - `mc-ngrok` (TCP tunnel to the server)
 
 ## Get the multiplayer address
 
-Run:
+If you want to fetch the tunnel again later, run:
 
 ```bash
 ./multiplayer-address.sh
