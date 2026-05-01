@@ -1,39 +1,25 @@
-# Docker Setup
+# Crazy Craft Docker Wrapper
 
-This server can run in Docker with Java 8. You can either keep the extracted server files in this folder, or let Docker bootstrap them from a zip so you do not have to commit the whole modpack.
+This repo keeps only the Docker files and startup wrapper. Download the actual Crazy Craft server files elsewhere, then place them in this folder before starting the container.
 
-## Requirements
+## Required server files
 
-- Docker Desktop
-- At least 10 GB of RAM available to Docker if you keep the default `8G` server allocation
+At minimum, this folder should contain:
 
-## Option 1: Bootstrap from a local zip
-
-Put the Crazy Craft server pack zip at `bootstrap/modpack.zip`, then run:
-
-```bash
-./setup-server.sh
-docker compose up -d --build
-```
-
-The setup script unpacks the server files into this folder before Docker starts.
-
-## Option 2: Bootstrap from a download URL
-
-Set `MODPACK_URL` in [`docker-compose.yml`](/Users/kararal-shanoon/Desktop/mc-server/docker-compose.yml) to a direct zip download, then run:
-
-```bash
-docker compose up -d --build
-```
-
-The container will download the archive, unzip it into this folder, and start the server.
+- `forge.jar`
+- `mods/`
+- `config/`
+- `defaultconfigs/`
+- `libraries/`
+- `server.properties`
+- `eula.txt`
 
 ## Start the server
 
-From this folder, run:
+1. Download or extract the Crazy Craft server pack into this folder.
+2. Start the container:
 
 ```bash
-./setup-server.sh
 docker compose up -d --build
 ```
 
@@ -60,17 +46,8 @@ MIN_RAM: 8G
 MAX_RAM: 8G
 ```
 
-For example, for 6 GB:
-
-```yaml
-MIN_RAM: 6G
-MAX_RAM: 6G
-```
-
 ## Notes
 
-- `bootstrap/*.zip` is ignored by git, so you can keep the server pack archive locally without committing it.
-- The extracted server files are still written into this folder because it is mounted as `/data`.
-- `eula.txt` is already set to `true`, so there is no extra EULA step.
+- The repo root is mounted directly into `/data` in the container.
+- If `forge.jar` is missing, the container exits with a clear error.
 - If you want to connect from the same machine, use `localhost:25565`.
-- If friends are joining over the internet, you will still need to port-forward `25565/TCP` on your router.

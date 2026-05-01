@@ -1,29 +1,4 @@
-# Often ignored for servers (world is huge / player-specific)
-world/
-world_nether/
-world_the_end/
-# Or only ignore MC internals while tracking region data (advanced / uncommon)
-# world/session.lock
-# world/region/*.mca
-logs/
-crash-reports/
-debug/
-usercache.json
-usernamecache.json
-ops.json
-whitelist.json
-banned-players.json
-banned-ips.json
-
 .DS_Store
-logs/
-crash-reports/
-world/
-journeymap/
-local/
-modernfix/
-usernamecache.json
-usercache.json
 .env
 mods/
 libraries/
@@ -31,9 +6,17 @@ config/
 defaultconfigs/
 kubejs/
 shrines-saves/
+world/
+journeymap/
+modernfix/
 forge.jar
 minecraft_server.1.16.5.jar
 server-icon.png
 eula.txt
-bootstrap/*.zip
-!bootstrap/.gitkeep
+server.properties
+ops.json
+whitelist.json
+banned-players.json
+banned-ips.json
+usercache.json
+usernamecache.json

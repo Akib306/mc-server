@@ -13,11 +13,6 @@ services:
       MIN_RAM: 8G
       MAX_RAM: 8G
       SERVER_DIR: /data
-      BOOTSTRAP_DIR: /bootstrap
-      MODPACK_ARCHIVE: /bootstrap/modpack.zip
-      MODS_ARCHIVE: /bootstrap/mods.zip
-      MODPACK_URL: ""
       JAVA_OPTS: ""
     volumes:
       - ./:/data
-      - ./bootstrap:/bootstrap
