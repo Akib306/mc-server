@@ -12,10 +12,11 @@ This server can run in Docker with Java 8. You can either keep the extracted ser
 Put the Crazy Craft server pack zip at `bootstrap/modpack.zip`, then run:
 
 ```bash
+./setup-server.sh
 docker compose up -d --build
 ```
 
-On first start, the container will unzip the pack into this folder and then launch Forge.
+The setup script unpacks the server files into this folder before Docker starts.
 
 ## Option 2: Bootstrap from a download URL
 
@@ -32,6 +33,7 @@ The container will download the archive, unzip it into this folder, and start th
 From this folder, run:
 
 ```bash
+./setup-server.sh
 docker compose up -d --build
 ```
 
