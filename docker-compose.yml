@@ -1,32 +1,23 @@
-
 services:
-  minecraft:
-    image: itzg/minecraft-server:latest
-    container_name: minecraft-forge
+  ccu-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ccu-server
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
     ports:
       - "25565:25565"
     environment:
-      EULA: "TRUE"
-      TYPE: "FORGE"
-      VERSION: "1.20.1"
-      MEMORY: "6G"
+      MIN_RAM: 8G
+      MAX_RAM: 8G
+      SERVER_DIR: /data
+      BOOTSTRAP_DIR: /bootstrap
+      MODPACK_ARCHIVE: /bootstrap/modpack.zip
+      MODS_ARCHIVE: /bootstrap/mods.zip
+      MODPACK_URL: ""
+      JAVA_OPTS: ""
     volumes:
-      - ./minecraft-data:/data
-      - ./mods:/mods:ro
-    tty: true
-    stdin_open: true
-    restart: unless-stopped
-
-  ngrok:
-    image: ngrok/ngrok:latest
-    container_name: mc-ngrok
-    depends_on:
-      - minecraft
-    command:
-      - tcp
-      - minecraft:25565
-    environment:
-      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN:?set NGROK_AUTHTOKEN in .env}
-    ports:
-      - "127.0.0.1:4040:4040"
-    restart: unless-stopped
+      - ./:/data
+      - ./bootstrap:/bootstrap
