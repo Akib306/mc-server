@@ -1,0 +1,8 @@
+services:
+  minecraft:
+    environment:
+      TYPE: FORGE
+      FORGE_VERSION: "${FORGE_VERSION:-RECOMMENDED}"
+    volumes:
+      - mc_data:/data
+      - ./mods:/mods:ro
