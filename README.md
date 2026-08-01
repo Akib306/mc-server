@@ -1,53 +1,34 @@
-# Crazy Craft Docker Wrapper
+# Vanilla Hardcore Server
 
-This repo keeps only the Docker files and startup wrapper. Download the actual Crazy Craft server files elsewhere, then place them in this folder before starting the container.
+Dockerized vanilla Minecraft `26.2` hardcore server. The official server JAR is downloaded from Mojang at runtime and verified against its pinned SHA-1, so no large binaries or world files are committed.
 
-## Required server files
+## Requirements
 
-At minimum, this folder should contain:
+- Docker with Compose
+- Acceptance of the [Minecraft EULA](https://aka.ms/MinecraftEULA)
 
-- `forge.jar`
-- `mods/`
-- `config/`
-- `defaultconfigs/`
-- `libraries/`
-- `server.properties`
-- `eula.txt`
-
-## Start the server
-
-1. Download or extract the Crazy Craft server pack into this folder.
-2. Start the container:
+## Start
 
 ```bash
+cp .env.example .env
+# Change EULA=FALSE to EULA=TRUE only after accepting the Minecraft EULA.
 docker compose up -d --build
 ```
 
-The server will be available on port `25565`.
+The server listens on host port `25566`, keeping port `25565` available for Crazy Craft.
 
-To watch logs:
-
-```bash
-docker compose logs -f
-```
-
-To stop it:
+## Operations
 
 ```bash
+docker compose logs -f --tail=200
 docker compose down
 ```
 
-## Change RAM
+Persistent server files and the hardcore world live under `data/` and are ignored by Git.
 
-Edit [`docker-compose.yml`](/Users/kararal-shanoon/Desktop/mc-server/docker-compose.yml) and change:
+## Pinned Runtime
 
-```yaml
-MIN_RAM: 8G
-MAX_RAM: 8G
-```
-
-## Notes
-
-- The repo root is mounted directly into `/data` in the container.
-- If `forge.jar` is missing, the container exits with a clear error.
-- If you want to connect from the same machine, use `localhost:25565`.
+- Minecraft: `26.2`
+- Java: `25`
+- Server SHA-1: `823e2250d24b3ddac457a60c92a6a941943fcd6a`
+- Heap: `1G` minimum, `4G` maximum

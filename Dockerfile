@@ -1,9 +1,15 @@
-FROM eclipse-temurin:8-jre
+FROM eclipse-temurin:25-jre
 
-WORKDIR /opt/ccu-server
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates curl \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY docker/start.sh /start.sh
+WORKDIR /data
 
-RUN chmod +x /start.sh
+COPY docker/start.sh /usr/local/bin/start-minecraft
+COPY server.properties /defaults/server.properties
 
-ENTRYPOINT ["/start.sh"]
+RUN chmod +x /usr/local/bin/start-minecraft
+
+EXPOSE 25565
+ENTRYPOINT ["/usr/local/bin/start-minecraft"]
