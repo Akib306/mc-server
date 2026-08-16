@@ -1,53 +1,41 @@
-# Crazy Craft Docker Wrapper
+# Optimized Cobblemon Server and Client
 
-This repo keeps only the Docker files and startup wrapper. Download the actual Crazy Craft server files elsewhere, then place them in this folder before starting the container.
+Fabric server and CurseForge client profile based on the official Cobblemon `1.7.3` pack for Minecraft `1.21.1`. Large mod, server, cache, world, and artifact files are downloaded or generated locally and are not committed.
 
-## Required server files
+## Optimization Stack
 
-At minimum, this folder should contain:
+The official profile already includes Sodium, Lithium, FerriteCore, ImmediatelyFast, Entity Culling, Krypton, Clumps, and Let Me Despawn.
 
-- `forge.jar`
-- `mods/`
-- `config/`
-- `defaultconfigs/`
-- `libraries/`
-- `server.properties`
-- `eula.txt`
+This project adds:
 
-## Start the server
+- Shared/server: ModernFix, ServerCore, NoisiumForked, Alternate Current
+- Client: Dynamic FPS, MoreCulling, Enhanced Block Entities, BadOptimizations, Particle Core
 
-1. Download or extract the Crazy Craft server pack into this folder.
-2. Start the container:
+Server-side-only optimization mods do not need to be present on clients, but they are included in the client profile so single-player worlds receive the same optimizations.
+
+## Server
+
+Requirements: Docker with Compose and `curl`. If `unzip` is unavailable, the fetcher uses a small Alpine container automatically.
 
 ```bash
+./scripts/fetch-server.sh
+cp .env.example .env
+# Set EULA=TRUE only after accepting https://aka.ms/MinecraftEULA
 docker compose up -d --build
 ```
 
-The server will be available on port `25565`.
+The server listens on host port `25567`. Persistent data is stored in `server/`.
 
-To watch logs:
+## Client
 
-```bash
-docker compose logs -f
-```
-
-To stop it:
+Building the import ZIP requires `zip` and `unzip`. A prebuilt artifact is also generated during deployment.
 
 ```bash
-docker compose down
+./scripts/build-client.sh
 ```
 
-## Change RAM
+Import `artifacts/Cobblemon-Optimized-1.7.3-CurseForge.zip` into CurseForge with **Import Profile**. Allocate 6-8 GB of memory in the profile settings.
 
-Edit [`docker-compose.yml`](/Users/kararal-shanoon/Desktop/mc-server/docker-compose.yml) and change:
+## Updating
 
-```yaml
-MIN_RAM: 8G
-MAX_RAM: 8G
-```
-
-## Notes
-
-- The repo root is mounted directly into `/data` in the container.
-- If `forge.jar` is missing, the container exits with a clear error.
-- If you want to connect from the same machine, use `localhost:25565`.
+All upstream files and added optimizers are pinned by CurseForge file ID and SHA-256 in `scripts/fetch-server.sh`. Update those pins together with `client/manifest.json` to keep the server and client compatible.

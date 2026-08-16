@@ -1,9 +1,9 @@
-FROM eclipse-temurin:8-jre
+FROM eclipse-temurin:21-jre
 
-WORKDIR /opt/ccu-server
+WORKDIR /data
 
-COPY docker/start.sh /start.sh
+COPY docker/start.sh /usr/local/bin/start-cobblemon
+RUN chmod +x /usr/local/bin/start-cobblemon
 
-RUN chmod +x /start.sh
-
-ENTRYPOINT ["/start.sh"]
+EXPOSE 25565
+ENTRYPOINT ["/usr/local/bin/start-cobblemon"]
