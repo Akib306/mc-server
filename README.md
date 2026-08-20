@@ -35,10 +35,14 @@ docker compose ps
 
 Java Edition uses TCP, but Bedrock Edition uses UDP. A TCP-only ngrok tunnel can expose the Java port but cannot expose Bedrock. For public crossplay, forward both ports on the router or use a tunnel provider with UDP support such as playit.gg.
 
-On a LAN, connect using the WSL/Windows host address:
+From Java Edition on the Windows host, use `localhost:25568`. WSL2 is running in NAT mode on this machine, so other LAN devices need Windows/router forwarding or a playit.gg tunnel.
 
-- Java: `<host>:25568`
-- Bedrock: `<host>` with port `19134`
+For a playit.gg agent running inside WSL, create two tunnels:
+
+- Java target: `127.0.0.1:25568` using TCP
+- Bedrock target: `127.0.0.1:19134` using the Minecraft Bedrock/UDP tunnel type
+
+The public Bedrock tunnel port must also be configured as Geyser's `broadcast-port` as described in the official Geyser playit.gg guide.
 
 ## Compatibility
 
