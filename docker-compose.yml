@@ -1,18 +1,41 @@
 services:
-  ccu-server:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: ccu-server
+  crossplay:
+    image: itzg/minecraft-server:java25
+    pull_policy: daily
+    container_name: minecraft-crossplay
     stdin_open: true
     tty: true
     restart: unless-stopped
     ports:
-      - "25565:25565"
+      - "${JAVA_PORT:-25568}:25565/tcp"
+      - "${BEDROCK_PORT:-19134}:19132/udp"
     environment:
-      MIN_RAM: 8G
-      MAX_RAM: 8G
-      SERVER_DIR: /data
-      JAVA_OPTS: ""
+      EULA: "${EULA:-FALSE}"
+      TYPE: PAPER
+      VERSION: "26.2"
+      INIT_MEMORY: "${MIN_RAM:-1G}"
+      MAX_MEMORY: "${MAX_RAM:-4G}"
+      USE_AIKAR_FLAGS: "true"
+      ONLINE_MODE: "true"
+      MOTD: "Java + Bedrock Crossplay Server"
+      DIFFICULTY: normal
+      MODE: survival
+      MAX_PLAYERS: "20"
+      VIEW_DISTANCE: "10"
+      SIMULATION_DISTANCE: "8"
+      SPAWN_PROTECTION: "0"
+      ENABLE_COMMAND_BLOCK: "false"
+      TZ: America/Regina
+      PLUGINS: |
+        https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot
+        https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot
     volumes:
-      - ./:/data
+      - ./data:/data
+    mem_limit: "${CONTAINER_MEMORY:-5G}"
+    stop_grace_period: 2m
+    healthcheck:
+      test: ["CMD", "mc-health"]
+      start_period: 2m
+      interval: 30s
+      timeout: 10s
+      retries: 3
